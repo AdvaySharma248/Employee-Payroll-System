@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Employee</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-text">EMPLOYEE<br><span>PAYROLL</span></div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="form-card page-form">
+        <h2 class="form-title">Add Employee</h2>
+
+        <% if (error) { %>
+          <div class="error-box"><%= error %></div>
+        <% } %>
+
+        <form action="/add" method="post">
+          <div class="form-row">
+            <label for="name">Name</label>
+            <input class="input" id="name" name="name" type="text" value="<%= employee.name %>" required />
+          </div>
+
+          <div class="form-row">
+            <label for="department">Department</label>
+            <input class="input" id="department" name="department" type="text" value="<%= employee.department %>" required />
+          </div>
+
+          <div class="form-row">
+            <label for="basicSalary">Basic Salary</label>
+            <input class="input" id="basicSalary" name="basicSalary" type="number" min="0" step="0.01" value="<%= employee.basicSalary %>" required />
+          </div>
+
+          <div class="form-actions">
+            <a class="btn link-btn" href="/">Cancel</a>
+            <div class="btn-cluster">
+              <button class="btn" type="submit">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

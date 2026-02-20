@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Payroll</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-text">EMPLOYEE<br><span>PAYROLL</span></div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="toolbar">
+        <h1>Employee Details</h1>
+        <div class="toolbar-actions">
+          <div class="search-wrap">
+            <span class="search-icon">&#128269;</span>
+            <input id="searchInput" type="text" placeholder="" />
+          </div>
+          <button class="add-btn" id="openFormBtn" type="button"><span class="plus-mark">+</span> Add User</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Gender</th>
+              <th>Department</th>
+              <th>Salary</th>
+              <th>Start Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="employeeTableBody">
+            <% if (!employees || employees.length === 0) { %>
+              <tr>
+                <td class="empty-row" colspan="6">No employee found.</td>
+              </tr>
+            <% } %>
+
+            <% employees.forEach((emp) => { %>
+              <% const basic = Number(emp.basicSalary || 0); %>
+              <% const tax = basic * 0.10; %>
+              <% const netSalary = basic - tax; %>
+              <% const departments = Array.isArray(emp.departments) && emp.departments.length ? emp.departments : (emp.department ? [emp.department] : []); %>
+              <tr data-name="<%= (emp.name || '').toLowerCase() %>">
+                <td>
+                  <div class="name-cell">
+                    <img class="avatar" src="<%= emp.profileImage || 'https://api.dicebear.com/7.x/adventurer/svg?seed=User' %>" alt="<%= emp.name %>" />
+                    <span><%= emp.name %></span>
+                  </div>
+                </td>
+                <td><%= emp.gender || '-' %></td>
+                <td>
+                  <div class="badge-group">
+                    <% departments.forEach((d) => { %>
+                      <span class="badge"><%= d %></span>
+                    <% }) %>
+                  </div>
+                </td>
+                <td>
+                  <div>INR <%= basic.toLocaleString("en-IN") %></div>
+                  <div class="salary-meta">Tax INR <%= tax.toLocaleString("en-IN") %> | Net INR <%= netSalary.toLocaleString("en-IN") %></div>
+                </td>
+                <td><%= emp.startDate || '-' %></td>
+                <td>
+                  <a class="action-btn delete-link" href="/delete/<%= emp.id %>" onclick="return confirm('Delete this employee?')">Del</a>
+                  <button class="action-btn" type="button" onclick="startEdit(<%= emp.id %>)">Edit</button>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal" id="formModal">
+    <div class="form-card">
+      <h2 class="form-title" id="formTitle">Employee Payroll Form</h2>
+
+      <% if (formError) { %>
+        <div class="error-box"><%= formError %></div>
+      <% } %>
+
+      <form id="employeeForm" action="/add" method="post">
+        <div class="form-row">
+          <label for="name">Name</label>
+          <input class="input" id="name" name="name" type="text" required />
+        </div>
+
+        <div class="form-row">
+          <label>Profile image</label>
+          <div class="avatar-options">
+            <label><input type="radio" name="profileImage" value="https://api.dicebear.com/7.x/adventurer/svg?seed=Riya" required /><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Riya" alt="Riya" /></label>
+            <label><input type="radio" name="profileImage" value="https://api.dicebear.com/7.x/adventurer/svg?seed=Karan" /><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Karan" alt="Karan" /></label>
+            <label><input type="radio" name="profileImage" value="https://api.dicebear.com/7.x/adventurer/svg?seed=Meera" /><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Meera" alt="Meera" /></label>
+            <label><input type="radio" name="profileImage" value="https://api.dicebear.com/7.x/adventurer/svg?seed=Arjun" /><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Arjun" alt="Arjun" /></label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label>Gender</label>
+          <div class="option-group">
+            <label><input type="radio" name="gender" value="Male" required /> Male</label>
+            <label><input type="radio" name="gender" value="Female" /> Female</label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label>Department</label>
+          <div class="option-group">
+            <label><input type="checkbox" name="departments" value="HR" /> HR</label>
+            <label><input type="checkbox" name="departments" value="Sales" /> Sales</label>
+            <label><input type="checkbox" name="departments" value="Finance" /> Finance</label>
+            <label><input type="checkbox" name="departments" value="Engineer" /> Engineer</label>
+            <label><input type="checkbox" name="departments" value="Others" /> Others</label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="salary">Salary</label>
+          <select class="select" id="salary" name="salary" required>
+            <option value="">Select Salary</option>
+            <option value="10000">10000</option>
+            <option value="20000">20000</option>
+            <option value="30000">30000</option>
+            <option value="40000">40000</option>
+            <option value="50000">50000</option>
+            <option value="60000">60000</option>
+            <option value="70000">70000</option>
+            <option value="80000">80000</option>
+            <option value="90000">90000</option>
+            <option value="100000">100000</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label>Start Date</label>
+          <div class="date-selects">
+            <select class="select" id="startDay" name="startDay" required></select>
+            <select class="select" id="startMonth" name="startMonth" required></select>
+            <select class="select" id="startYear" name="startYear" required></select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="notes">Notes</label>
+          <textarea class="textarea" id="notes" name="notes"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn" type="button" id="cancelBtn">Cancel</button>
+          <div class="btn-cluster">
+            <button class="btn" type="submit" id="submitBtn">Submit</button>
+            <button class="btn" type="reset" id="resetBtn">Reset</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const employees = <%- JSON.stringify(employees || []) %>;
+    const formData = <%- JSON.stringify(formData || null) %>;
+    const editingId = <%- JSON.stringify(editingId || null) %>;
+
+    const tableBody = document.getElementById("employeeTableBody");
+    const formModal = document.getElementById("formModal");
+    const form = document.getElementById("employeeForm");
+    const openFormBtn = document.getElementById("openFormBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const submitBtn = document.getElementById("submitBtn");
+    const formTitle = document.getElementById("formTitle");
+    const searchInput = document.getElementById("searchInput");
+    const searchWrap = document.querySelector(".search-wrap");
+
+    function fillDateSelects() {
+      const day = document.getElementById("startDay");
+      const month = document.getElementById("startMonth");
+      const year = document.getElementById("startYear");
+
+      day.innerHTML = '<option value="">Day</option>';
+      for (let i = 1; i <= 31; i += 1) {
+        day.innerHTML += `<option value="${i}">${i}</option>`;
+      }
+
+      month.innerHTML = '<option value="">Month</option>';
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      months.forEach((m, i) => {
+        month.innerHTML += `<option value="${i + 1}">${m}</option>`;
+      });
+
+      year.innerHTML = '<option value="">Year</option>';
+      const currentYear = new Date().getFullYear();
+      for (let y = currentYear + 1; y >= currentYear - 30; y -= 1) {
+        year.innerHTML += `<option value="${y}">${y}</option>`;
+      }
+
+      function daysInMonth(selectedYear, selectedMonth) {
+        if (!selectedYear || !selectedMonth) return 31;
+        return new Date(selectedYear, selectedMonth, 0).getDate();
+      }
+
+      function refreshDays() {
+        const selectedDay = Number(day.value || 0);
+        const selectedMonth = Number(month.value || 0);
+        const selectedYear = Number(year.value || 0);
+        const maxDays = daysInMonth(selectedYear, selectedMonth);
+
+        day.innerHTML = '<option value="">Day</option>';
+        for (let i = 1; i <= maxDays; i += 1) {
+          day.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+
+        if (selectedDay && selectedDay <= maxDays) {
+          day.value = String(selectedDay);
+        }
+      }
+
+      month.addEventListener("change", refreshDays);
+      year.addEventListener("change", refreshDays);
+    }
+
+    function openForm() {
+      formModal.classList.add("open");
+    }
+
+    function closeForm() {
+      formModal.classList.remove("open");
+      form.reset();
+      form.action = "/add";
+      formTitle.textContent = "Employee Payroll Form";
+      submitBtn.textContent = "Submit";
+    }
+
+    function setFormValues(emp) {
+      if (!emp) return;
+
+      document.getElementById("name").value = emp.name || "";
+      document.getElementById("salary").value = String(emp.basicSalary || emp.salary || "");
+      document.getElementById("notes").value = emp.notes || "";
+
+      form.querySelectorAll('input[name="gender"]').forEach((node) => {
+        node.checked = node.value === (emp.gender || "");
+      });
+
+      form.querySelectorAll('input[name="profileImage"]').forEach((node) => {
+        node.checked = node.value === (emp.profileImage || "");
+      });
+
+      const departments = Array.isArray(emp.departments)
+        ? emp.departments
+        : typeof emp.departments === "string"
+          ? [emp.departments]
+          : typeof emp.department === "string" && emp.department
+            ? [emp.department]
+            : [];
+
+      form.querySelectorAll('input[name="departments"]').forEach((node) => {
+        node.checked = departments.includes(node.value);
+      });
+
+      if (emp.startDate) {
+        const dateObj = new Date(emp.startDate);
+        if (!Number.isNaN(dateObj.getTime())) {
+          document.getElementById("startDay").value = String(dateObj.getDate());
+          document.getElementById("startMonth").value = String(dateObj.getMonth() + 1);
+          document.getElementById("startYear").value = String(dateObj.getFullYear());
+        }
+      }
+    }
+
+    window.startEdit = function startEdit(id) {
+      const emp = employees.find((item) => Number(item.id) === Number(id));
+      if (!emp) return;
+
+      form.action = `/edit/${emp.id}`;
+      formTitle.textContent = "Edit Employee";
+      submitBtn.textContent = "Update";
+
+      form.reset();
+      setFormValues(emp);
+      openForm();
+    };
+
+    openFormBtn.addEventListener("click", () => {
+      form.action = "/add";
+      formTitle.textContent = "Employee Payroll Form";
+      submitBtn.textContent = "Submit";
+      form.reset();
+      openForm();
+    });
+
+    cancelBtn.addEventListener("click", closeForm);
+
+    formModal.addEventListener("click", (event) => {
+      if (event.target === formModal) {
+        closeForm();
+      }
+    });
+
+    searchInput.addEventListener("input", (event) => {
+      const query = String(event.target.value || "").toLowerCase();
+      searchWrap.classList.toggle("active", query.length > 0 || document.activeElement === searchInput);
+      const rows = tableBody.querySelectorAll("tr[data-name]");
+      let visible = 0;
+
+      rows.forEach((row) => {
+        const name = row.getAttribute("data-name") || "";
+        const show = name.includes(query);
+        row.style.display = show ? "" : "none";
+        if (show) visible += 1;
+      });
+
+      const emptyRow = tableBody.querySelector(".empty-row")?.parentElement;
+      if (emptyRow) {
+        emptyRow.style.display = visible === 0 ? "" : "none";
+      }
+    });
+
+    searchWrap.addEventListener("click", () => {
+      searchWrap.classList.add("active");
+      searchInput.focus();
+    });
+
+    searchInput.addEventListener("blur", () => {
+      if (!searchInput.value.trim()) {
+        searchWrap.classList.remove("active");
+      }
+    });
+
+    fillDateSelects();
+
+    if (formData) {
+      if (editingId) {
+        form.action = `/edit/${editingId}`;
+        formTitle.textContent = "Edit Employee";
+        submitBtn.textContent = "Update";
+      }
+      setFormValues(formData);
+      openForm();
+    }
+  </script>
+</body>
+</html>
