@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1771420260995,
+    "name": "Harsh",
+    "department": "Finance, Engineer",
+    "basicSalary": 100000,
+    "departments": [
+      "Finance",
+      "Engineer"
+    ],
+    "gender": "Male",
+    "profileImage": "https://api.dicebear.com/7.x/adventurer/svg?seed=Meera",
+    "startDate": "2010-03-03",
+    "notes": ""
+  },
+  {
+    "id": 1771420569508,
+    "name": "Dinesh",
+    "department": "Sales",
+    "basicSalary": 20000,
+    "departments": [
+      "Sales"
+    ],
+    "gender": "Male",
+    "profileImage": "https://api.dicebear.com/7.x/adventurer/svg?seed=Meera",
+    "startDate": "2017-10-08",
+    "notes": ""
+  },
+  {
+    "id": 1771420651212,
+    "name": "Shobhit",
+    "department": "Engineer",
+    "basicSalary": 20000,
+    "departments": [
+      "Engineer"
+    ],
+    "gender": "Male",
+    "profileImage": "https://api.dicebear.com/7.x/adventurer/svg?seed=Riya",
+    "startDate": "2017-11-16",
+    "notes": ""
+  },
+  {
+    "id": 1771421498191,
+    "name": "Diya",
+    "department": "HR, Sales",
+    "departments": [
+      "HR",
+      "Sales"
+    ],
+    "basicSalary": 60000,
+    "gender": "Female",
+    "profileImage": "https://api.dicebear.com/7.x/adventurer/svg?seed=Arjun",
+    "startDate": "2005-03-12",
+    "notes": ""
+  }
+]

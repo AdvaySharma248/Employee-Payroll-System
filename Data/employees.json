@@ -1,0 +1,54 @@
+[
+  {
+    "id": "34542604-fa6c-4748-ba27-e21cf986ec20",
+    "name": "Aditya",
+    "basicSalary": 20000,
+    "allowances": 0,
+    "deductions": 0,
+    "totalSalary": 20000,
+    "gender": "Male",
+    "departments": [
+      "HR",
+      "Sales",
+      "Finance"
+    ],
+    "startDate": "2024-01-29",
+    "profileImage": "https://api.dicebear.com/7.x/adventurer/svg?seed=Riya",
+    "notes": ""
+  },
+  {
+    "id": "a5f38aa4-1350-4ad2-883b-2b3f76afb9ad",
+    "name": "Harsh",
+    "basicSalary": 50000,
+    "allowances": 0,
+    "deductions": 0,
+    "totalSalary": 50000,
+    "gender": "Male",
+    "departments": [
+      "HR",
+      "Sales",
+      "Finance",
+      "Engineer"
+    ],
+    "startDate": "2023-10-29",
+    "profileImage": "https://api.dicebear.com/7.x/adventurer/svg?seed=Riya",
+    "notes": ""
+  },
+  {
+    "id": "b0b177c3-534f-4c08-9b27-9d9810533f3b",
+    "name": "shobhit",
+    "basicSalary": 50000,
+    "allowances": 0,
+    "deductions": 0,
+    "totalSalary": 50000,
+    "gender": "Male",
+    "departments": [
+      "HR",
+      "Finance",
+      "Others"
+    ],
+    "startDate": "2021-06-15",
+    "profileImage": "https://api.dicebear.com/7.x/adventurer/svg?seed=Arjun",
+    "notes": ""
+  }
+]
